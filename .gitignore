@@ -175,3 +175,6 @@ cython_debug/
 
 # CSV files
 *.csv
+
+# Old log files
+*.log.old
