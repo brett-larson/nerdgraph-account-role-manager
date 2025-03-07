@@ -1,3 +1,9 @@
+from account_role_manager.utils import Logger
+
+# Create logger for the module
+logger = Logger(__name__).get_logger()
+
+
 class AuthenticationGroupsQuery:
     """Handles querying and formatting results for authentication groups with pagination support"""
 
