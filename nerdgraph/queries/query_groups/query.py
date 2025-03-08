@@ -1,4 +1,3 @@
-import logging
 from nerdgraph.utils import Logger
 from processing import format_results, has_next_page, extract_cursor
 
