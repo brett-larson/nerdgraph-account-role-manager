@@ -1,5 +1,5 @@
 from nerdgraph.utils import Logger
-from processing import format_results, has_next_page, extract_cursor
+from data_processor import format_results, has_next_page, extract_cursor
 
 # Create logger for the module
 logger = Logger(__name__).get_logger()
@@ -63,7 +63,7 @@ def get_variables(auth_domain_ids, cursor=None):
 
     return variables
 
-def fetch_all_groups(client, auth_domain_ids):
+def fetch_groups(client, auth_domain_ids):
     """
     Fetch all groups for the given authentication domains.
     :param client: The NerdGraph client to use for the query
@@ -73,6 +73,7 @@ def fetch_all_groups(client, auth_domain_ids):
 
     all_groups = [] # Empty list to store all groups
 
+    # Ensure auth_domain_ids is a list
     if isinstance(auth_domain_ids, str):
         auth_domain_ids = [auth_domain_ids]
 
