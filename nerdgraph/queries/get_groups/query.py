@@ -64,7 +64,14 @@ def get_variables(auth_domain_ids, cursor=None):
     return variables
 
 def fetch_all_groups(client, auth_domain_ids):
-    all_groups = []
+    """
+    Fetch all groups for the given authentication domains.
+    :param client: The NerdGraph client to use for the query
+    :param auth_domain_ids: The New Relic authentication domain IDs to fetch groups.
+    :return: A list of groups for the given authentication domains.
+    """
+
+    all_groups = [] # Empty list to store all groups
 
     if isinstance(auth_domain_ids, str):
         auth_domain_ids = [auth_domain_ids]
