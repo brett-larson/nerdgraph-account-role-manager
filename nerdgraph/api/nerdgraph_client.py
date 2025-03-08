@@ -1,6 +1,6 @@
 import os
 import requests
-from account_role_manager.utils import Logger
+from nerdgraph.utils import Logger
 from dotenv import load_dotenv
 from typing import Optional, Dict
 
