@@ -81,19 +81,27 @@ def fetch_all_groups(client, auth_domain_ids):
             logger.info(f"Executing query with variables: {variables}")
             try:
                 response = client.execute_query(query, variables)
-                logger.debug(f"Query response: {response}")
+            except Exception as e:
+                logger.error(f"Error executing query: {e}")
+                break
 
+            try:
+                logger.debug(f"Query response: {response}")
                 groups = format_results(response)
                 logger.info(f"Formatted groups: {groups}")
                 all_groups.extend(groups)
+            except Exception as e:
+                logger.error(f"Error processing query response: {e}")
+                break
 
+            try:
                 has_more = has_next_page(response)
                 logger.info(f"Has next page: {has_more}")
                 if has_more:
                     cursor = extract_cursor(response)
                     logger.info(f"Next cursor: {cursor}")
             except Exception as e:
-                logger.error(f"Error executing query: {e}")
+                logger.error(f"Error handling pagination: {e}")
                 break
 
     return all_groups
