@@ -77,13 +77,18 @@ def fetch_all_groups(client, auth_domain_ids):
             query = get_query(with_cursor=cursor is not None)
             variables = get_variables([domain_id], cursor)
 
+            logger.info(f"Executing query with variables: {variables}")
             response = client.execute_query(query, variables)
+            logger.debug(f"Query response: {response}")
 
             groups = format_results(response)
+            logger.info(f"Formatted groups: {groups}")
             all_groups.extend(groups)
 
             has_more = has_next_page(response)
+            logger.info(f"Has next page: {has_more}")
             if has_more:
                 cursor = extract_cursor(response)
+                logger.info(f"Next cursor: {cursor}")
 
     return all_groups
