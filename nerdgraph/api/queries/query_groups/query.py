@@ -1,5 +1,5 @@
 from account_role_manager.utils import Logger
-from processing import processing import format_results, has_next_page, extract_cursor
+from processing import format_results, has_next_page, extract_cursor
 
 # Create logger for the module
 logger = Logger(__name__).get_logger()
