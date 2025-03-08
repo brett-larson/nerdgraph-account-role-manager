@@ -1,3 +1,4 @@
+import logging
 from nerdgraph.utils import Logger
 from processing import format_results, has_next_page, extract_cursor
 
@@ -78,17 +79,21 @@ def fetch_all_groups(client, auth_domain_ids):
             variables = get_variables([domain_id], cursor)
 
             logger.info(f"Executing query with variables: {variables}")
-            response = client.execute_query(query, variables)
-            logger.debug(f"Query response: {response}")
+            try:
+                response = client.execute_query(query, variables)
+                logger.debug(f"Query response: {response}")
 
-            groups = format_results(response)
-            logger.info(f"Formatted groups: {groups}")
-            all_groups.extend(groups)
+                groups = format_results(response)
+                logger.info(f"Formatted groups: {groups}")
+                all_groups.extend(groups)
 
-            has_more = has_next_page(response)
-            logger.info(f"Has next page: {has_more}")
-            if has_more:
-                cursor = extract_cursor(response)
-                logger.info(f"Next cursor: {cursor}")
+                has_more = has_next_page(response)
+                logger.info(f"Has next page: {has_more}")
+                if has_more:
+                    cursor = extract_cursor(response)
+                    logger.info(f"Next cursor: {cursor}")
+            except Exception as e:
+                logger.error(f"Error executing query: {e}")
+                break
 
     return all_groups
