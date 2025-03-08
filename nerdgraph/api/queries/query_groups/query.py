@@ -1,4 +1,4 @@
-from account_role_manager.utils import Logger
+from nerdgraph.utils import Logger
 from processing import format_results, has_next_page, extract_cursor
 
 # Create logger for the module
