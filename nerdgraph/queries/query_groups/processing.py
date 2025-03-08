@@ -1,4 +1,4 @@
-from account_role_manager.utils import Logger
+from nerdgraph.utils import Logger
 
 # Create logger for the module
 logger = Logger(__name__).get_logger()
