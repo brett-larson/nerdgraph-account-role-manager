@@ -1,7 +1,7 @@
 from account_role_manager.utils import Logger
 
 # Create logger for the module
-logger = Logger(__name__).get_logger()  
+logger = Logger(__name__).get_logger()
 
 def extract_cursor(response_data, domain_index=0):
     try:
