@@ -43,6 +43,11 @@ def get_query(with_cursor=False):
         """
 
 def get_variables(cursor=None):
+    """
+    Get the variables for the query.
+    :param cursor:
+    :return:
+    """
     variables = {}
     if cursor:
         variables["cursor"] = cursor
