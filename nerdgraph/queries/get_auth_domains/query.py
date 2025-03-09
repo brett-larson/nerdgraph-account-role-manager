@@ -1,5 +1,5 @@
 from nerdgraph.utils import Logger
-# from processing import format_results, has_next_page, extract_cursor
+from data_processor import format_results, has_next_page, extract_cursor
 
 # Create logger for the module
 logger = Logger(__name__).get_logger()
@@ -76,7 +76,7 @@ def fetch_auth_domains(client):
             logger.debug(f"Query response: {response}")
             groups = format_results(response)
             logger.info(f"Formatted groups: {groups}")
-            all_groups.extend(groups)
+            all_auth_domains.extend(groups)
         except Exception as e:
             logger.error(f"Error processing query response: {e}")
             break
