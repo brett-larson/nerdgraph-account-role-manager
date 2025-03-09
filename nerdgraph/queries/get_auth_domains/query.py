@@ -1,5 +1,5 @@
 from nerdgraph.utils import Logger
-from data_processor import format_results, has_next_page, extract_cursor
+from .data_processor import format_results, has_next_page, extract_cursor
 
 # Create logger for the module
 logger = Logger(__name__).get_logger()
@@ -55,15 +55,15 @@ def get_variables(cursor=None):
 
 def fetch_auth_domains(client):
     """
-    Fetch all groups for the given authentication domains.
+    Fetch all authentication domains.
     :param client: The NerdGraph client to use for the query
-    :return: A list of groups for the given authentication domains.
+    :return: A list of authentication domains.
     """
 
-    all_auth_domains = []  # Empty list to store all groups
+    all_auth_domains = []  # Empty list to store auth domains.
 
-    cursor = None
-    has_more = True
+    cursor = None # Start with no cursor.
+    has_more = True # Assume there are more pages to fetch.
 
     while has_more:
         query = get_query(with_cursor=cursor is not None)
@@ -80,7 +80,7 @@ def fetch_auth_domains(client):
         try:
             logger.debug(f"Query response: {response}")
             groups = format_results(response)
-            logger.info(f"Formatted groups: {groups}")
+            logger.info(f"Formatted Auth Domains: {groups}")
             all_auth_domains.extend(groups)
         except Exception as e:
             logger.error(f"Error processing query response: {e}")

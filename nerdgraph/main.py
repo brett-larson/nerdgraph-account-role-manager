@@ -13,5 +13,5 @@ if __name__ == '__main__':
 
     get_auth_domain_workflow(client)
 
-
+    logger.info('********** Ending NerdGraph App **********.')
 

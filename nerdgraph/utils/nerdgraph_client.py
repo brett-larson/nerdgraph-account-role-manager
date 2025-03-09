@@ -1,8 +1,9 @@
 import os
+import time
 import requests
 from nerdgraph.utils import Logger
 from dotenv import load_dotenv
-from typing import Optional, Dict
+from typing import Optional, Dict, Any
 
 # Load environment variables from .env file
 load_dotenv()
@@ -29,18 +30,34 @@ class NerdGraphClient:
         """
         return os.getenv('NEW_RELIC_API_KEY')
 
-    def execute_query(self, query: str, variables: Dict = None) -> Dict:
-        """Execute a single GraphQL query"""
-        try:
-            logger.info("Sending GraphQL request.")
-            response = requests.post(
-                "https://api.newrelic.com/graphql",
-                headers=self.headers,
-                json={"query": query, "variables": variables}
-            )
-            response.raise_for_status()
-        except Exception as e:
-            logger.error(f"Query failed to run: {e}")
-            raise Exception(f"Query failed to run: {e}")
+    def execute_query(self, query: str, variables: Dict = None, max_retries: int = 3, backoff_factor: int = 2) -> Any | None:
+        """Execute a single GraphQL query with retry logic"""
+        payload = {
+            "query": query,
+            "variables": variables
+        }
 
-        return response.json()
+        for attempt in range(max_retries):
+            try:
+                logger.info("Sending GraphQL request.")
+                response = requests.post(
+                    "https://api.newrelic.com/graphql",
+                    headers=self.headers,
+                    json=payload
+                )
+                response.raise_for_status()
+                data = response.json()
+                if 'errors' in data:
+                    error = data['errors'][0]
+                    if error['extensions']['errorClass'] == 'TIMEOUT':
+                        logger.error(f"Timeout error: {error['message']}")
+                        time.sleep(backoff_factor ** attempt)
+                        continue
+                    else:
+                        logger.error(f"GraphQL error: {error['message']}")
+                        return None
+                return data
+            except Exception as e:
+                logger.error(f"Query failed to run: {e}")
+                time.sleep(backoff_factor ** attempt)
+        raise Exception("Max retries exceeded for GraphQL query")
